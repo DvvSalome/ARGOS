@@ -224,11 +224,12 @@
 
     .fake {
       margin: 0;
-      width: min(340px, 78vw);
-      padding: 12px 12px 16px;
-      border-radius: 18px;
-      background: #fffdf8;
-      box-shadow: 0 22px 40px rgba(120, 78, 20, 0.18);
+      width: auto;
+      max-width: min(320px, 76vw);
+      padding: 8px;
+      border-radius: 16px;
+      background: #14110e;
+      box-shadow: 0 22px 40px rgba(20, 12, 8, 0.28);
       transform: scale(0.88) rotate(-2deg);
       opacity: 0;
     }
@@ -245,8 +246,10 @@
 
     .fake img {
       display: block;
-      width: 100%;
+      width: auto;
       height: auto;
+      max-width: min(304px, 72vw);
+      max-height: min(58vh, 520px);
       border-radius: 10px;
     }
 
@@ -394,7 +397,7 @@
 
       <div class="reveal" id="reveal" hidden>
         <figure class="fake" id="fake">
-          <img src="regalo-falso.png" alt="" />
+          <img src="gorila.jpg" alt="" />
         </figure>
         <p class="mentira" id="mentira" role="status"></p>
       </div>
@@ -759,10 +762,11 @@
       openBtn.hidden = true;
       reveal.hidden = false;
       fake.classList.add("is-in");
-      await wait(1600);
+      const shownAt = performance.now();
+      await wait(1400);
       mentira.textContent = "no mentira";
       mentira.classList.add("is-in");
-      await wait(1700);
+      await wait(Math.max(0, 3500 - (performance.now() - shownAt)));
       fake.classList.add("is-out");
       mentira.classList.add("is-out");
       await wait(380);
