@@ -130,42 +130,14 @@
     .copy.swap { opacity: 0; transform: translateY(-8px); }
 
     .pa-ti {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.08em;
       margin: 0;
       font-family: Fraunces, Georgia, serif;
       font-weight: 640;
       font-size: clamp(4.6rem, 16vw, 8.6rem);
-      letter-spacing: -0.05em;
-      line-height: 0.78;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      text-align: center;
     }
-
-    .pa {
-      position: relative;
-      display: block;
-      width: 1.22em;
-      height: 0.92em;
-    }
-
-    .pa-top,
-    .pa-bot {
-      position: absolute;
-      left: 0;
-      top: 0;
-      line-height: 0.78;
-    }
-
-    .pa-top { clip-path: inset(0 0 54% 0); }
-
-    .pa-bot {
-      top: 0.16em;
-      left: 0.045em;
-      clip-path: inset(50% 0 0 0);
-    }
-
-    .ti { line-height: 0.78; }
 
     .gift-wrap {
       position: relative;
@@ -368,10 +340,7 @@
 
   <main class="stage">
     <header class="copy">
-      <h1 class="pa-ti" aria-label="Pa ti">
-        <span class="pa" aria-hidden="true"><span class="pa-top">Pa</span><span class="pa-bot">Pa</span></span>
-        <span class="ti" aria-hidden="true">ti</span>
-      </h1>
+      <h1 class="pa-ti">Pa ti</h1>
     </header>
 
     <div class="gift-wrap">
