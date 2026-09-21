@@ -234,6 +234,8 @@
     }
 
     .fake.is-in {
+      opacity: 1;
+      transform: none;
       animation: card-in 0.48s cubic-bezier(0.16, 1.25, 0.36, 1) forwards;
     }
 
@@ -259,7 +261,11 @@
       opacity: 0;
     }
 
-    .mentira.is-in { animation: line-in 0.35s ease forwards; }
+    .mentira.is-in {
+      opacity: 1;
+      transform: none;
+      animation: line-in 0.35s ease forwards;
+    }
     .mentira.is-out { animation: card-out 0.28s ease forwards; }
 
     @keyframes card-in {
@@ -627,7 +633,7 @@
     }
 
     function wait(ms) {
-      return new Promise((resolve) => window.setTimeout(resolve, reduceMotion ? Math.min(ms, 280) : ms));
+      return new Promise((resolve) => window.setTimeout(resolve, ms));
     }
 
     function fitCanvas() {
@@ -753,10 +759,10 @@
       openBtn.hidden = true;
       reveal.hidden = false;
       fake.classList.add("is-in");
-      await wait(1100);
+      await wait(1600);
       mentira.textContent = "no mentira";
       mentira.classList.add("is-in");
-      await wait(1400);
+      await wait(1700);
       fake.classList.add("is-out");
       mentira.classList.add("is-out");
       await wait(380);
