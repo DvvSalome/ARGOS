@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#fff4d2" />
-  <title>Regalito del 21 · flores amarillas</title>
+  <title>Pa ti</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,520;0,9..144,640;1,9..144,520&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -129,31 +129,43 @@
 
     .copy.swap { opacity: 0; transform: translateY(-8px); }
 
-    .kicker {
-      margin: 0 0 10px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--gold);
-    }
-
-    h1 {
+    .pa-ti {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.08em;
       margin: 0;
       font-family: Fraunces, Georgia, serif;
       font-weight: 640;
-      font-size: clamp(2.5rem, 7vw, 4.6rem);
-      letter-spacing: -0.035em;
-      line-height: 0.92;
+      font-size: clamp(4.6rem, 16vw, 8.6rem);
+      letter-spacing: -0.05em;
+      line-height: 0.78;
     }
 
-    .lede {
-      margin: 14px auto 0;
-      max-width: 34rem;
-      font-size: clamp(1.02rem, 2.4vw, 1.2rem);
-      line-height: 1.45;
-      color: var(--muted);
+    .pa {
+      position: relative;
+      display: block;
+      width: 1.22em;
+      height: 0.92em;
     }
+
+    .pa-top,
+    .pa-bot {
+      position: absolute;
+      left: 0;
+      top: 0;
+      line-height: 0.78;
+    }
+
+    .pa-top { clip-path: inset(0 0 54% 0); }
+
+    .pa-bot {
+      top: 0.16em;
+      left: 0.045em;
+      clip-path: inset(50% 0 0 0);
+    }
+
+    .ti { line-height: 0.78; }
 
     .gift-wrap {
       position: relative;
@@ -164,6 +176,8 @@
       width: 100%;
       padding: 8px 0 4px;
     }
+
+    .gift-wrap > * { grid-area: 1 / 1; }
 
     .present {
       appearance: none;
@@ -199,56 +213,67 @@
       50% { transform: rotate(7deg); }
     }
 
-    .hint {
-      position: relative;
-      z-index: 8;
+    .reveal {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .reveal[hidden] { display: none; }
+
+    .fake {
       margin: 0;
-      min-height: 1.4em;
-      width: fit-content;
-      max-width: min(36rem, 92vw);
-      padding: 4px 12px;
-      border-radius: 999px;
-      background: rgba(255, 248, 234, 0.82);
-      text-align: center;
-      color: var(--gold);
-      font-weight: 550;
-      letter-spacing: 0.01em;
+      width: min(340px, 78vw);
+      padding: 12px 12px 16px;
+      border-radius: 18px;
+      background: #fffdf8;
+      box-shadow: 0 22px 40px rgba(120, 78, 20, 0.18);
+      transform: scale(0.88) rotate(-2deg);
+      opacity: 0;
     }
 
-    .count {
-      position: relative;
-      z-index: 8;
-      margin: 8px 0 0;
+    .fake.is-in {
+      animation: card-in 0.48s cubic-bezier(0.16, 1.25, 0.36, 1) forwards;
+    }
+
+    .fake.is-out {
+      animation: card-out 0.38s ease forwards;
+    }
+
+    .fake img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .mentira {
+      margin: 0;
       min-height: 1.2em;
-      width: fit-content;
-      padding: 2px 10px;
-      border-radius: 999px;
-      background: rgba(255, 248, 234, 0.82);
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.92rem;
+      font-family: Fraunces, Georgia, serif;
+      font-style: italic;
+      font-weight: 520;
+      font-size: clamp(1.7rem, 4.5vw, 2.5rem);
+      color: var(--ink);
+      opacity: 0;
     }
 
-    .count:empty {
-      padding: 0;
-      background: transparent;
+    .mentira.is-in { animation: line-in 0.35s ease forwards; }
+    .mentira.is-out { animation: card-out 0.28s ease forwards; }
+
+    @keyframes card-in {
+      to { opacity: 1; transform: scale(1) rotate(0deg); }
     }
 
-    .reset {
-      position: relative;
-      z-index: 8;
-      margin-top: 10px;
-      border: 0;
-      background: transparent;
-      color: var(--muted);
-      font: inherit;
-      font-size: 0.85rem;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      cursor: pointer;
+    @keyframes card-out {
+      to { opacity: 0; transform: scale(1.04) translateY(10px); }
     }
 
-    .reset[hidden] { display: none; }
+    @keyframes line-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: none; }
+    }
 
     .bouquet {
       position: relative;
@@ -315,13 +340,13 @@
 
     @media (max-width: 640px) {
       .bouquet { height: min(430px, 50vh); min-height: 280px; }
-      .lede { font-size: 1rem; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .drift i, .sway, .tag-swing, .present.opening { animation: none; }
+      .drift i, .sway, .tag-swing, .present.opening,
+      .fake.is-in, .fake.is-out, .mentira.is-in, .mentira.is-out { animation: none; }
       .slot { animation: none; transform: translate(-50%, -50%) scale(1); }
-      .copy { transition: none; }
+      .fake.is-in, .mentira.is-in { opacity: 1; transform: none; }
     }
   </style>
 </head>
@@ -333,15 +358,16 @@
   <div id="extras"></div>
 
   <main class="stage">
-    <header class="copy" id="copy">
-      <p class="kicker" id="kicker">21 de septiembre</p>
-      <h1 id="title">Tengo un regalito.</h1>
-      <p class="lede" id="lede">Flores amarillas, porque hoy toca. Sin poema y sin discurso.</p>
+    <header class="copy">
+      <h1 class="pa-ti" aria-label="Pa ti">
+        <span class="pa" aria-hidden="true"><span class="pa-top">Pa</span><span class="pa-bot">Pa</span></span>
+        <span class="ti" aria-hidden="true">ti</span>
+      </h1>
     </header>
 
     <div class="gift-wrap">
       <button class="present" id="open" type="button">
-        <span class="sr">Abrir el ramo de flores amarillas</span>
+        <span class="sr">Abrir</span>
         <svg class="gift-svg" viewBox="0 0 260 340" aria-hidden="true">
           <ellipse cx="130" cy="312" rx="78" ry="10" fill="rgba(120,80,20,0.13)" />
           <g id="peek-left" transform="translate(72,148)"></g>
@@ -357,25 +383,21 @@
           <circle cx="130" cy="214" r="8" fill="#c99600" />
           <path d="M120 222 L102 258" stroke="#e6b400" stroke-width="6" stroke-linecap="round" />
           <path d="M140 222 L160 260" stroke="#f2c200" stroke-width="6" stroke-linecap="round" />
-          <g class="tag-swing">
-            <path d="M146 214 Q168 214 176 232" fill="none" stroke="#8c6239" stroke-width="1.6" />
-            <g transform="translate(186,248) rotate(8)">
-              <rect x="-30" y="-18" width="60" height="36" rx="5" fill="#fff8e8" stroke="#e2c48a" />
-              <text x="0" y="5" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="14" fill="#5c4a2a">21/09</text>
-            </g>
-          </g>
         </svg>
       </button>
+
+      <div class="reveal" id="reveal" hidden>
+        <figure class="fake" id="fake">
+          <img src="regalo-falso.png" alt="" />
+        </figure>
+        <p class="mentira" id="mentira" role="status"></p>
+      </div>
 
       <div class="bouquet" id="bouquet" hidden>
         <svg class="stems" id="stems" aria-hidden="true"></svg>
         <div id="blooms"></div>
       </div>
     </div>
-
-    <p class="hint" id="hint" role="status">Toca el ramo. No muerde.</p>
-    <p class="count" id="count"></p>
-    <button class="reset" id="reset" type="button" hidden>Envolver otra vez</button>
   </main>
 
   <script>
@@ -386,22 +408,11 @@
     const stems = document.getElementById("stems");
     const garden = document.getElementById("garden");
     const extras = document.getElementById("extras");
-    const hint = document.getElementById("hint");
-    const countEl = document.getElementById("count");
-    const resetBtn = document.getElementById("reset");
+    const reveal = document.getElementById("reveal");
+    const fake = document.getElementById("fake");
+    const mentira = document.getElementById("mentira");
     const canvas = document.getElementById("petals");
     const ctx = canvas.getContext("2d");
-
-    const QUIPS = [
-      "Otra. Una sola quedaba de tacaño.",
-      "Esa salió medio chueca. Pasa en la naturaleza.",
-      "Ya parece una plaza un 21 a media mañana.",
-      "El florista cobra en clics. Vas al día.",
-      "Cero polen. Puedes estornudar tranquilo.",
-      "Esa es para la foto. La de al lado también.",
-      "Si esto fuera la esquina, ya te habrían cobrado de más.",
-      "Prometido: no hay que cambiarles el agua."
-    ];
 
     const BOUQUET = [
       { type: "sun", x: 50, y: 18, s: 34, d: 90, z: 3 },
@@ -425,10 +436,8 @@
       { type: "sun", x: "18vw", y: "90vh", s: "88px", d: 660, z: 2 }
     ];
 
-    let opened = false;
-    let total = 0;
+    let phase = "closed";
     let planted = 0;
-    let quipIndex = 0;
     let petals = [];
     let raf = 0;
     let reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -617,31 +626,8 @@
       stems.appendChild(el("circle", { cx: String(cx), cy: String(h * 0.86), r: "6", fill: "#c99600" }));
     }
 
-    function setCopy(mode) {
-      const copy = document.getElementById("copy");
-      const next = mode === "open"
-        ? {
-            kicker: "protocolo del 21",
-            title: "Flores amarillas.",
-            lede: "No es una declaración, es la fecha. Brillantes, un poco dramáticas y sin tarjeta adentro."
-          }
-        : {
-            kicker: "21 de septiembre",
-            title: "Tengo un regalito.",
-            lede: "Flores amarillas, porque hoy toca. Sin poema y sin discurso."
-          };
-      copy.classList.add("swap");
-      window.setTimeout(() => {
-        document.getElementById("kicker").textContent = next.kicker;
-        document.getElementById("title").textContent = next.title;
-        document.getElementById("lede").textContent = next.lede;
-        copy.classList.remove("swap");
-      }, reduceMotion ? 0 : 180);
-    }
-
-    function updateCount(message) {
-      countEl.textContent = total ? `${total} flores · polen 0%` : "";
-      if (message) hint.textContent = message;
+    function wait(ms) {
+      return new Promise((resolve) => window.setTimeout(resolve, reduceMotion ? Math.min(ms, 280) : ms));
     }
 
     function fitCanvas() {
@@ -691,7 +677,7 @@
         ctx.fill();
         ctx.restore();
       }
-      if (opened && petals.filter((p) => !p.burst).length < 28 && !reduceMotion) {
+      if (phase === "flowers" && petals.filter((p) => !p.burst).length < 28 && !reduceMotion) {
         if (Math.random() < 0.45) spawnPetal(Math.random() * window.innerWidth, -20, false);
       }
       raf = requestAnimationFrame(tick);
@@ -739,40 +725,46 @@
       FRAME.forEach((flower, index) => {
         if (narrow && index > 3) return;
         placeFlower(garden, flower);
-        total += 1;
       });
-      total += BOUQUET.length;
       drawStems();
-      updateCount("Sigue tocando la pantalla: salen más, y no hay que buscar florero.");
     }
 
-    function openGift() {
-      if (opened) return;
-      opened = true;
+    function showFlowers() {
+      reveal.hidden = true;
+      bouquet.hidden = false;
+      document.body.classList.add("is-open");
+      phase = "flowers";
+      requestAnimationFrame(() => {
+        buildScene();
+        if (!reduceMotion) burstFromBouquet();
+        if (!raf) {
+          fitCanvas();
+          raf = requestAnimationFrame(tick);
+        }
+      });
+    }
+
+    async function openGift() {
+      if (phase !== "closed") return;
+      phase = "joke";
       openBtn.classList.add("opening");
-      setCopy("open");
       chime();
-      window.setTimeout(() => {
-        openBtn.hidden = true;
-        bouquet.hidden = false;
-        document.body.classList.add("is-open");
-        resetBtn.hidden = false;
-        requestAnimationFrame(() => {
-          buildScene();
-          if (!reduceMotion) burstFromBouquet();
-          if (!raf) {
-            fitCanvas();
-            raf = requestAnimationFrame(tick);
-          }
-        });
-      }, reduceMotion ? 0 : 360);
+      await wait(360);
+      openBtn.hidden = true;
+      reveal.hidden = false;
+      fake.classList.add("is-in");
+      await wait(1100);
+      mentira.textContent = "no mentira";
+      mentira.classList.add("is-in");
+      await wait(1400);
+      fake.classList.add("is-out");
+      mentira.classList.add("is-out");
+      await wait(380);
+      showFlowers();
     }
 
     function plant(x, y) {
-      if (!opened || planted >= 28) {
-        if (opened && planted >= 28) hint.textContent = "Para, que esto ya es un vivero.";
-        return;
-      }
+      if (phase !== "flowers" || planted >= 28) return;
       const types = ["sun", "daisy", "butter", "daisy", "butter"];
       const type = types[Math.floor(Math.random() * types.length)];
       const size = 58 + Math.random() * 64;
@@ -785,34 +777,9 @@
         z: 3
       });
       planted += 1;
-      total += 1;
       if (!reduceMotion) {
         for (let i = 0; i < 6; i += 1) spawnPetal(x, y, true);
       }
-      let message = QUIPS[quipIndex % QUIPS.length];
-      quipIndex += 1;
-      if (total === 21) message = "21 flores. Igual que el día. Casualidad, claro.";
-      updateCount(message);
-    }
-
-    function resetGift() {
-      opened = false;
-      total = 0;
-      planted = 0;
-      quipIndex = 0;
-      petals = [];
-      blooms.replaceChildren();
-      garden.replaceChildren();
-      extras.replaceChildren();
-      stems.replaceChildren();
-      bouquet.hidden = true;
-      openBtn.hidden = false;
-      openBtn.classList.remove("opening");
-      resetBtn.hidden = true;
-      document.body.classList.remove("is-open");
-      hint.textContent = "Toca el ramo. No muerde.";
-      countEl.textContent = "";
-      setCopy("closed");
     }
 
     openBtn.addEventListener("click", (event) => {
@@ -821,19 +788,14 @@
     });
 
     document.addEventListener("click", (event) => {
-      if (!opened) return;
+      if (phase !== "flowers") return;
       if (event.target.closest("button")) return;
       plant(event.clientX, event.clientY);
     });
 
-    resetBtn.addEventListener("click", (event) => {
-      event.stopPropagation();
-      resetGift();
-    });
-
     window.addEventListener("resize", () => {
       fitCanvas();
-      if (opened) drawStems();
+      if (phase === "flowers") drawStems();
     });
 
     fitCanvas();
