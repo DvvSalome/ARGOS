@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#fff4d2" />
+  <title>Regalito del 21 · flores amarillas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,520;0,9..144,640;1,9..144,520&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='6' fill='%23f0a020'/%3E%3Ccircle cx='16' cy='6' r='4' fill='%23ffd23a'/%3E%3Ccircle cx='16' cy='26' r='4' fill='%23ffd23a'/%3E%3Ccircle cx='6' cy='16' r='4' fill='%23ffd23a'/%3E%3Ccircle cx='26' cy='16' r='4' fill='%23ffd23a'/%3E%3C/svg%3E" />
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #2b2416;
+      --muted: #6e6248;
+      --gold: #a0792e;
+      --cream: #fff8ea;
+      --paper: #edcfa4;
+      --paper-dark: #d9b07a;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { margin: 0; min-height: 100%; }
+
+    body {
+      min-height: 100dvh;
+      color: var(--ink);
+      font-family: Outfit, system-ui, sans-serif;
+      background:
+        radial-gradient(ellipse 70% 46% at 50% -8%, #fff1b4 0%, transparent 62%),
+        radial-gradient(ellipse 42% 32% at 100% 100%, #ffe39a 0%, transparent 55%),
+        radial-gradient(ellipse 36% 28% at 0% 90%, #fff0c4 0%, transparent 50%),
+        linear-gradient(180deg, #fffaf0 0%, #fff3d4 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      z-index: 1;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+    }
+
+    .sunblob {
+      position: fixed;
+      z-index: 0;
+      top: -20vw;
+      left: 50%;
+      width: min(68vw, 720px);
+      height: min(68vw, 720px);
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 214, 90, 0.9), rgba(255, 214, 90, 0) 68%);
+      filter: blur(6px);
+      pointer-events: none;
+      transition: transform 0.9s ease;
+    }
+
+    body.is-open .sunblob { transform: translateX(-50%) scale(1.12); }
+
+    .drift {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .drift i {
+      position: absolute;
+      top: -8vh;
+      width: 14px;
+      height: 20px;
+      border-radius: 70% 70% 50% 50%;
+      background: linear-gradient(#fff4b0, #ffc400);
+      opacity: 0.8;
+      animation: fall linear infinite;
+    }
+
+    .drift i:nth-child(1) { left: 12%; animation-duration: 11s; animation-delay: -2s; }
+    .drift i:nth-child(2) { left: 38%; width: 10px; height: 16px; animation-duration: 14s; animation-delay: -7s; }
+    .drift i:nth-child(3) { left: 72%; animation-duration: 12s; animation-delay: -4s; }
+    .drift i:nth-child(4) { left: 88%; width: 11px; height: 15px; animation-duration: 16s; animation-delay: -9s; }
+
+    @keyframes fall {
+      0% { transform: translateY(-10vh) rotate(0deg); }
+      100% { transform: translateY(110vh) rotate(220deg); }
+    }
+
+    #petals {
+      position: fixed;
+      inset: 0;
+      z-index: 3;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    #garden, #extras {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    #garden { z-index: 4; }
+    #extras { z-index: 6; }
+
+    .stage {
+      position: relative;
+      z-index: 5;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: max(28px, env(safe-area-inset-top)) 20px max(22px, env(safe-area-inset-bottom));
+    }
+
+    .copy {
+      text-align: center;
+      max-width: 38rem;
+      transition: opacity 0.28s ease, transform 0.28s ease;
+    }
+
+    .copy.swap { opacity: 0; transform: translateY(-8px); }
+
+    .kicker {
+      margin: 0 0 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    h1 {
+      margin: 0;
+      font-family: Fraunces, Georgia, serif;
+      font-weight: 640;
+      font-size: clamp(2.5rem, 7vw, 4.6rem);
+      letter-spacing: -0.035em;
+      line-height: 0.92;
+    }
+
+    .lede {
+      margin: 14px auto 0;
+      max-width: 34rem;
+      font-size: clamp(1.02rem, 2.4vw, 1.2rem);
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .gift-wrap {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      width: 100%;
+      padding: 8px 0 4px;
+    }
+
+    .present {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      position: relative;
+      width: min(320px, 86vw);
+      filter: drop-shadow(0 18px 22px rgba(120, 78, 20, 0.16));
+      transition: transform 0.25s ease;
+    }
+
+    .present:hover { transform: translateY(-8px) rotate(-1.2deg); }
+    .present:active { transform: translateY(-2px) scale(0.98); }
+    .present:focus-visible {
+      outline: 3px solid #e2a400;
+      outline-offset: 8px;
+      border-radius: 24px;
+    }
+
+    .present.opening { animation: gift-away 0.42s ease forwards; }
+
+    @keyframes gift-away {
+      to { transform: translateY(16px) scale(0.9); opacity: 0; }
+    }
+
+    .gift-svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+    .tag-swing { transform-origin: 168px 214px; animation: swing 3.2s ease-in-out infinite; }
+    @keyframes swing {
+      0%, 100% { transform: rotate(-6deg); }
+      50% { transform: rotate(7deg); }
+    }
+
+    .hint {
+      margin: 0;
+      min-height: 1.4em;
+      text-align: center;
+      color: var(--gold);
+      font-weight: 550;
+      letter-spacing: 0.01em;
+    }
+
+    .count {
+      margin: 8px 0 0;
+      min-height: 1.2em;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .reset {
+      margin-top: 10px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 0.85rem;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer;
+    }
+
+    .reset[hidden] { display: none; }
+
+    .bouquet {
+      position: relative;
+      width: min(480px, 94vw);
+      height: min(540px, 58vh);
+      min-height: 320px;
+    }
+
+    .bouquet[hidden] { display: none; }
+
+    .bouquet svg.stems {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      z-index: 1;
+    }
+
+    .slot {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      width: var(--s);
+      aspect-ratio: 1;
+      transform: translate(-50%, -50%) scale(0);
+      animation: pop 0.72s cubic-bezier(0.16, 1.35, 0.36, 1) forwards;
+      animation-delay: var(--d);
+      z-index: var(--z);
+      filter: drop-shadow(0 8px 5px rgba(176, 110, 16, 0.16));
+    }
+
+    .slot svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+    .sway {
+      width: 100%;
+      height: 100%;
+      transform-origin: 50% 70%;
+      animation: sway 5.4s ease-in-out infinite;
+      animation-delay: var(--d);
+    }
+
+    @keyframes pop {
+      0% { transform: translate(-50%, -50%) scale(0) rotate(-8deg); }
+      100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+    }
+
+    @keyframes sway {
+      0%, 100% { transform: rotate(-2.4deg); }
+      50% { transform: rotate(2.6deg); }
+    }
+
+    .sr {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 640px) {
+      .bouquet { height: min(430px, 50vh); min-height: 280px; }
+      .lede { font-size: 1rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .drift i, .sway, .tag-swing, .present.opening { animation: none; }
+      .slot { animation: none; transform: translate(-50%, -50%) scale(1); }
+      .copy { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sunblob" aria-hidden="true"></div>
+  <div class="drift" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <canvas id="petals" aria-hidden="true"></canvas>
+  <div id="garden"></div>
+  <div id="extras"></div>
+
+  <main class="stage">
+    <header class="copy" id="copy">
+      <p class="kicker" id="kicker">21 de septiembre</p>
+      <h1 id="title">Tengo un regalito.</h1>
+      <p class="lede" id="lede">Flores amarillas, porque hoy toca. Sin poema y sin discurso.</p>
+    </header>
+
+    <div class="gift-wrap">
+      <button class="present" id="open" type="button">
+        <span class="sr">Abrir el ramo de flores amarillas</span>
+        <svg class="gift-svg" viewBox="0 0 260 340" aria-hidden="true">
+          <ellipse cx="130" cy="312" rx="78" ry="10" fill="rgba(120,80,20,0.13)" />
+          <g id="peek-left" transform="translate(72,148)"></g>
+          <g id="peek-right" transform="translate(192,154)"></g>
+          <g id="peek-sun" transform="translate(130,136)"></g>
+          <polygon points="76,158 184,158 222,292 38,292" fill="#edcfa4" />
+          <polygon points="130,158 184,158 222,292 130,292" fill="#d9b07a" />
+          <path d="M130 158 L130 292" stroke="#c49a62" stroke-width="1.5" />
+          <path d="M92 176 Q130 198 168 176" fill="none" stroke="#c9a36c" stroke-width="1.2" opacity="0.7" />
+          <path d="M54 214 H206" stroke="#8c6239" stroke-width="3" fill="none" stroke-linecap="round" />
+          <ellipse cx="104" cy="214" rx="24" ry="15" fill="#f2c200" />
+          <ellipse cx="156" cy="214" rx="24" ry="15" fill="#e0ae00" />
+          <circle cx="130" cy="214" r="8" fill="#c99600" />
+          <path d="M120 222 L102 258" stroke="#e6b400" stroke-width="6" stroke-linecap="round" />
+          <path d="M140 222 L160 260" stroke="#f2c200" stroke-width="6" stroke-linecap="round" />
+          <g class="tag-swing">
+            <path d="M146 214 Q168 214 176 232" fill="none" stroke="#8c6239" stroke-width="1.6" />
+            <g transform="translate(186,248) rotate(8)">
+              <rect x="-30" y="-18" width="60" height="36" rx="5" fill="#fff8e8" stroke="#e2c48a" />
+              <text x="0" y="5" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="14" fill="#5c4a2a">21/09</text>
+            </g>
+          </g>
+        </svg>
+      </button>
+
+      <div class="bouquet" id="bouquet" hidden>
+        <svg class="stems" id="stems" aria-hidden="true"></svg>
+        <div id="blooms"></div>
+      </div>
+    </div>
+
+    <p class="hint" id="hint" role="status">Toca el ramo. No muerde.</p>
+    <p class="count" id="count"></p>
+    <button class="reset" id="reset" type="button" hidden>Envolver otra vez</button>
+  </main>
+
+  <script>
+    const NS = "http://www.w3.org/2000/svg";
+    const openBtn = document.getElementById("open");
+    const bouquet = document.getElementById("bouquet");
+    const blooms = document.getElementById("blooms");
+    const stems = document.getElementById("stems");
+    const garden = document.getElementById("garden");
+    const extras = document.getElementById("extras");
+    const hint = document.getElementById("hint");
+    const countEl = document.getElementById("count");
+    const resetBtn = document.getElementById("reset");
+    const canvas = document.getElementById("petals");
+    const ctx = canvas.getContext("2d");
+
+    const QUIPS = [
+      "Otra. Una sola quedaba de tacaño.",
+      "Esa salió medio chueca. Pasa en la naturaleza.",
+      "Ya parece una plaza un 21 a media mañana.",
+      "El florista cobra en clics. Vas al día.",
+      "Cero polen. Puedes estornudar tranquilo.",
+      "Esa es para la foto. La de al lado también.",
+      "Si esto fuera la esquina, ya te habrían cobrado de más.",
+      "Prometido: no hay que cambiarles el agua."
+    ];
+
+    const BOUQUET = [
+      { type: "sun", x: 50, y: 18, s: 34, d: 90, z: 3 },
+      { type: "sun", x: 27, y: 34, s: 26, d: 170, z: 4 },
+      { type: "sun", x: 74, y: 32, s: 28, d: 140, z: 4 },
+      { type: "daisy", x: 41, y: 28, s: 16, d: 250, z: 5 },
+      { type: "daisy", x: 62, y: 25, s: 15, d: 290, z: 5 },
+      { type: "butter", x: 34, y: 48, s: 17, d: 340, z: 6 },
+      { type: "butter", x: 67, y: 49, s: 18, d: 310, z: 6 },
+      { type: "daisy", x: 50, y: 42, s: 15, d: 380, z: 7 },
+      { type: "butter", x: 16, y: 44, s: 13, d: 430, z: 5 },
+      { type: "daisy", x: 86, y: 46, s: 14, d: 460, z: 5 }
+    ];
+
+    const FRAME = [
+      { type: "butter", x: "7vw", y: "64vh", s: "74px", d: 520, z: 2 },
+      { type: "daisy", x: "11vw", y: "80vh", s: "58px", d: 580, z: 2 },
+      { type: "sun", x: "90vw", y: "62vh", s: "104px", d: 500, z: 2 },
+      { type: "daisy", x: "93vw", y: "80vh", s: "62px", d: 640, z: 2 },
+      { type: "butter", x: "80vw", y: "90vh", s: "68px", d: 700, z: 2 },
+      { type: "sun", x: "18vw", y: "90vh", s: "88px", d: 660, z: 2 }
+    ];
+
+    let opened = false;
+    let total = 0;
+    let planted = 0;
+    let quipIndex = 0;
+    let petals = [];
+    let raf = 0;
+    let reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function el(name, attrs) {
+      const node = document.createElementNS(NS, name);
+      for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, value);
+      return node;
+    }
+
+    function drawFlower(type) {
+      const svg = el("svg", { viewBox: "0 0 100 100" });
+      const petalsGroup = el("g", {});
+      if (type === "sun") {
+        for (let i = 0; i < 16; i += 1) {
+          petalsGroup.appendChild(el("ellipse", {
+            cx: "50", cy: "18", rx: "7.2", ry: "15",
+            fill: i % 2 ? "#ffc107" : "#ffd84a",
+            transform: `rotate(${i * 22.5} 50 50)`
+          }));
+        }
+        for (let i = 0; i < 16; i += 1) {
+          petalsGroup.appendChild(el("ellipse", {
+            cx: "50", cy: "26", rx: "5.4", ry: "11",
+            fill: "#ffe56a",
+            transform: `rotate(${i * 22.5 + 11} 50 50)`
+          }));
+        }
+        svg.appendChild(petalsGroup);
+        svg.appendChild(el("circle", { cx: "50", cy: "50", r: "16.5", fill: "#8d4e16" }));
+        svg.appendChild(el("circle", { cx: "50", cy: "50", r: "13", fill: "#b86a22" }));
+        for (let i = 0; i < 42; i += 1) {
+          const ang = i * 2.399963;
+          const r = 11 * Math.sqrt(i / 42);
+          svg.appendChild(el("circle", {
+            cx: String(50 + Math.cos(ang) * r),
+            cy: String(50 + Math.sin(ang) * r),
+            r: "1.15",
+            fill: i % 3 ? "#5c320e" : "#e0a05a"
+          }));
+        }
+      } else if (type === "daisy") {
+        for (let i = 0; i < 12; i += 1) {
+          petalsGroup.appendChild(el("ellipse", {
+            cx: "50", cy: "20", rx: "9", ry: "14",
+            fill: i % 2 ? "#ffe98a" : "#ffd34d",
+            transform: `rotate(${i * 30} 50 50)`
+          }));
+        }
+        svg.appendChild(petalsGroup);
+        svg.appendChild(el("circle", { cx: "50", cy: "50", r: "13", fill: "#f0a31c" }));
+        svg.appendChild(el("circle", { cx: "50", cy: "50", r: "7.5", fill: "#ffe7a0" }));
+        svg.appendChild(el("circle", { cx: "46", cy: "46", r: "2.4", fill: "#fff", opacity: "0.7" }));
+      } else {
+        for (let i = 0; i < 6; i += 1) {
+          petalsGroup.appendChild(el("ellipse", {
+            cx: "50", cy: "24", rx: "13", ry: "16",
+            fill: i % 2 ? "#ffd000" : "#ffe14a",
+            transform: `rotate(${i * 60} 50 50)`
+          }));
+        }
+        svg.appendChild(petalsGroup);
+        svg.appendChild(el("circle", { cx: "50", cy: "50", r: "8", fill: "#fff3c4" }));
+        svg.appendChild(el("circle", { cx: "50", cy: "50", r: "3.2", fill: "#e8b000" }));
+      }
+      return svg;
+    }
+
+    function fillPeek(id, type, scale) {
+      const g = document.getElementById(id);
+      const flower = drawFlower(type);
+      flower.setAttribute("x", String(-34 * scale));
+      flower.setAttribute("y", String(-34 * scale));
+      flower.setAttribute("width", String(68 * scale));
+      flower.setAttribute("height", String(68 * scale));
+      g.appendChild(flower);
+    }
+
+    fillPeek("peek-sun", "sun", 1.15);
+    fillPeek("peek-left", "daisy", 0.72);
+    fillPeek("peek-right", "butter", 0.68);
+
+    function placeFlower(parent, spec) {
+      const slot = document.createElement("div");
+      slot.className = "slot";
+      slot.style.setProperty("--x", spec.x);
+      slot.style.setProperty("--y", spec.y);
+      slot.style.setProperty("--s", spec.s);
+      slot.style.setProperty("--d", `${spec.d}ms`);
+      slot.style.setProperty("--z", spec.z);
+      const sway = document.createElement("div");
+      sway.className = "sway";
+      sway.style.setProperty("--d", `${spec.d}ms`);
+      sway.appendChild(drawFlower(spec.type));
+      slot.appendChild(sway);
+      parent.appendChild(slot);
+      return slot;
+    }
+
+    function quad(p0, p1, p2, t) {
+      const u = 1 - t;
+      return {
+        x: u * u * p0.x + 2 * u * t * p1.x + t * t * p2.x,
+        y: u * u * p0.y + 2 * u * t * p1.y + t * t * p2.y
+      };
+    }
+
+    function drawStems() {
+      const box = bouquet.getBoundingClientRect();
+      if (!box.width || !box.height) return;
+      stems.setAttribute("viewBox", `0 0 ${box.width} ${box.height}`);
+      stems.replaceChildren();
+      const gather = { x: box.width * 0.5, y: box.height * 0.86 };
+      BOUQUET.forEach((flower, index) => {
+        const p0 = {
+          x: box.width * flower.x / 100,
+          y: box.height * flower.y / 100 + (box.width * flower.s / 100) * 0.28
+        };
+        const p2 = {
+          x: gather.x + (p0.x - gather.x) * 0.04,
+          y: gather.y
+        };
+        const p1 = { x: (p0.x + p2.x) / 2, y: (p0.y + p2.y) / 2 };
+        const path = el("path", {
+          d: `M ${p0.x} ${p0.y} Q ${p1.x} ${p1.y} ${p2.x} ${p2.y}`,
+          fill: "none",
+          stroke: "#2f6b43",
+          "stroke-width": "4",
+          "stroke-linecap": "round"
+        });
+        stems.appendChild(path);
+        const len = path.getTotalLength();
+        if (!reduceMotion) {
+          path.style.strokeDasharray = String(len);
+          path.style.strokeDashoffset = String(len);
+          path.animate(
+            [{ strokeDashoffset: len }, { strokeDashoffset: 0 }],
+            { duration: 700, delay: Math.max(0, flower.d - 80), fill: "forwards", easing: "ease" }
+          );
+        }
+        if (index % 2 === 0) {
+          const a = quad(p0, p1, p2, 0.58);
+          const b = quad(p0, p1, p2, 0.64);
+          const ang = Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI;
+          const leaf = el("ellipse", {
+            cx: String(a.x),
+            cy: String(a.y),
+            rx: "16",
+            ry: "7",
+            fill: index % 4 === 0 ? "#3f9a56" : "#2f7d45",
+            transform: `rotate(${ang} ${a.x} ${a.y})`
+          });
+          if (!reduceMotion) {
+            leaf.style.opacity = "0";
+            leaf.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, delay: flower.d, fill: "forwards" });
+          }
+          stems.appendChild(leaf);
+        }
+      });
+
+      const w = box.width;
+      const h = box.height;
+      const cx = w * 0.5;
+      const top = h * 0.78;
+      const bot = h * 0.97;
+      stems.appendChild(el("polygon", {
+        points: `${cx - w * 0.16},${top} ${cx + w * 0.16},${top} ${cx + w * 0.25},${bot} ${cx - w * 0.25},${bot}`,
+        fill: "#edcfa4"
+      }));
+      stems.appendChild(el("polygon", {
+        points: `${cx},${top} ${cx + w * 0.16},${top} ${cx + w * 0.25},${bot} ${cx},${bot}`,
+        fill: "#d9b07a"
+      }));
+      stems.appendChild(el("path", {
+        d: `M ${cx - w * 0.2} ${h * 0.86} H ${cx + w * 0.2}`,
+        stroke: "#8c6239",
+        "stroke-width": "3",
+        "stroke-linecap": "round"
+      }));
+      stems.appendChild(el("ellipse", {
+        cx: String(cx - 18), cy: String(h * 0.86), rx: "16", ry: "10", fill: "#f2c200"
+      }));
+      stems.appendChild(el("ellipse", {
+        cx: String(cx + 18), cy: String(h * 0.86), rx: "16", ry: "10", fill: "#e0ae00"
+      }));
+      stems.appendChild(el("circle", { cx: String(cx), cy: String(h * 0.86), r: "6", fill: "#c99600" }));
+    }
+
+    function setCopy(mode) {
+      const copy = document.getElementById("copy");
+      const next = mode === "open"
+        ? {
+            kicker: "protocolo del 21",
+            title: "Flores amarillas.",
+            lede: "No es una declaración, es la fecha. Brillantes, un poco dramáticas y sin tarjeta adentro."
+          }
+        : {
+            kicker: "21 de septiembre",
+            title: "Tengo un regalito.",
+            lede: "Flores amarillas, porque hoy toca. Sin poema y sin discurso."
+          };
+      copy.classList.add("swap");
+      window.setTimeout(() => {
+        document.getElementById("kicker").textContent = next.kicker;
+        document.getElementById("title").textContent = next.title;
+        document.getElementById("lede").textContent = next.lede;
+        copy.classList.remove("swap");
+      }, reduceMotion ? 0 : 180);
+    }
+
+    function updateCount(message) {
+      countEl.textContent = total ? `${total} flores · polen 0%` : "";
+      if (message) hint.textContent = message;
+    }
+
+    function fitCanvas() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(window.innerWidth * dpr);
+      canvas.height = Math.floor(window.innerHeight * dpr);
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function spawnPetal(x, y, burst) {
+      const colors = ["#ffe14a", "#ffc700", "#ffd86a", "#f5b400", "#fff0a0"];
+      petals.push({
+        x,
+        y,
+        rx: 4 + Math.random() * 5,
+        ry: 7 + Math.random() * 6,
+        vx: burst ? (Math.random() - 0.5) * 7 : (Math.random() - 0.5) * 0.6,
+        vy: burst ? -2 - Math.random() * 4 : 0.35 + Math.random() * 0.9,
+        vr: (Math.random() - 0.5) * 0.12,
+        rot: Math.random() * Math.PI,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        life: burst ? 1 : 1,
+        burst
+      });
+    }
+
+    function tick() {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      petals = petals.filter((p) => p.y < window.innerHeight + 30 && p.life > 0);
+      for (const p of petals) {
+        if (p.burst) {
+          p.vy += 0.08;
+          p.life -= 0.008;
+        }
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.globalAlpha = p.burst ? Math.max(p.life, 0) : 0.9;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, p.rx, p.ry, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+      if (opened && petals.filter((p) => !p.burst).length < 28 && !reduceMotion) {
+        if (Math.random() < 0.45) spawnPetal(Math.random() * window.innerWidth, -20, false);
+      }
+      raf = requestAnimationFrame(tick);
+    }
+
+    function burstFromBouquet() {
+      const box = bouquet.getBoundingClientRect();
+      const x = box.left + box.width / 2;
+      const y = box.top + box.height * 0.28;
+      for (let i = 0; i < 26; i += 1) spawnPetal(x, y, true);
+    }
+
+    function chime() {
+      if (reduceMotion) return;
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const audio = new AudioCtx();
+      [523.25, 659.25, 783.99].forEach((freq, i) => {
+        const osc = audio.createOscillator();
+        const gain = audio.createGain();
+        osc.type = "sine";
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.0001, audio.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.05, audio.currentTime + 0.03 + i * 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + 0.7);
+        osc.connect(gain);
+        gain.connect(audio.destination);
+        osc.start(audio.currentTime + i * 0.03);
+        osc.stop(audio.currentTime + 0.75);
+      });
+    }
+
+    function buildScene() {
+      blooms.replaceChildren();
+      garden.replaceChildren();
+      const narrow = window.innerWidth < 700;
+      BOUQUET.forEach((flower) => {
+        placeFlower(blooms, {
+          ...flower,
+          x: `${flower.x}%`,
+          y: `${flower.y}%`,
+          s: `${flower.s}%`
+        });
+      });
+      FRAME.forEach((flower, index) => {
+        if (narrow && index > 3) return;
+        placeFlower(garden, flower);
+        total += 1;
+      });
+      total += BOUQUET.length;
+      drawStems();
+      updateCount("Sigue tocando la pantalla: salen más, y no hay que buscar florero.");
+    }
+
+    function openGift() {
+      if (opened) return;
+      opened = true;
+      openBtn.classList.add("opening");
+      setCopy("open");
+      chime();
+      window.setTimeout(() => {
+        openBtn.hidden = true;
+        bouquet.hidden = false;
+        document.body.classList.add("is-open");
+        resetBtn.hidden = false;
+        requestAnimationFrame(() => {
+          buildScene();
+          if (!reduceMotion) burstFromBouquet();
+          if (!raf) {
+            fitCanvas();
+            raf = requestAnimationFrame(tick);
+          }
+        });
+      }, reduceMotion ? 0 : 360);
+    }
+
+    function plant(x, y) {
+      if (!opened || planted >= 28) {
+        if (opened && planted >= 28) hint.textContent = "Para, que esto ya es un vivero.";
+        return;
+      }
+      const types = ["sun", "daisy", "butter", "daisy", "butter"];
+      const type = types[Math.floor(Math.random() * types.length)];
+      const size = 58 + Math.random() * 64;
+      placeFlower(extras, {
+        type,
+        x: `${x}px`,
+        y: `${y}px`,
+        s: `${size}px`,
+        d: 0,
+        z: 3
+      });
+      planted += 1;
+      total += 1;
+      if (!reduceMotion) {
+        for (let i = 0; i < 6; i += 1) spawnPetal(x, y, true);
+      }
+      let message = QUIPS[quipIndex % QUIPS.length];
+      quipIndex += 1;
+      if (total === 21) message = "21 flores. Igual que el día. Casualidad, claro.";
+      updateCount(message);
+    }
+
+    function resetGift() {
+      opened = false;
+      total = 0;
+      planted = 0;
+      quipIndex = 0;
+      petals = [];
+      blooms.replaceChildren();
+      garden.replaceChildren();
+      extras.replaceChildren();
+      stems.replaceChildren();
+      bouquet.hidden = true;
+      openBtn.hidden = false;
+      openBtn.classList.remove("opening");
+      resetBtn.hidden = true;
+      document.body.classList.remove("is-open");
+      hint.textContent = "Toca el ramo. No muerde.";
+      countEl.textContent = "";
+      setCopy("closed");
+    }
+
+    openBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      openGift();
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!opened) return;
+      if (event.target.closest("button")) return;
+      plant(event.clientX, event.clientY);
+    });
+
+    resetBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      resetGift();
+    });
+
+    window.addEventListener("resize", () => {
+      fitCanvas();
+      if (opened) drawStems();
+    });
+
+    fitCanvas();
+  </script>
+</body>
+</html>
